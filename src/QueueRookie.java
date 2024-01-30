@@ -1,49 +1,64 @@
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class QueueRookie {
-    public static void main(String[] args) throws Exception{
+
+    public static void main(String[] args) throws  Exception{
         System.setIn(new FileInputStream("C:\\Users\\hung\\IdeaProjects\\learn SRV\\src\\input_queuerookie.txt"));
         Scanner scanner = new Scanner(System.in);
+        int T = scanner.nextInt();
 
-        int t = scanner.nextInt(); // Số lượng test case
+        for (int tc = 1; tc <= T; tc++) {
+            int N = scanner.nextInt();
+            int[][] A = new int[N][2];
 
-        for (int i = 0; i < t; i++) {
-            int n = scanner.nextInt(); // Số lượng người trong hàng đợi
-            int[] heights = new int[n]; // Mảng chứa chiều cao của mỗi người
-            int[] taller = new int[n]; // Mảng chứa số người cao hơn đứng trước mỗi người
-
-            // Đọc chiều cao của mỗi người
-            for (int j = 0; j < n; j++) {
-                heights[j] = scanner.nextInt();
+            for (int i = 0; i < N; i++) {
+                A[i][0] = scanner.nextInt();
+            }
+            for (int i = 0; i < N; i++) {
+                A[i][1] = scanner.nextInt();
             }
 
-            // Đọc số người cao hơn đứng trước mỗi người
-            for (int j = 0; j < n; j++) {
-                taller[j] = scanner.nextInt();
+            // Sắp xếp mảng A theo chiều cao tăng dần
+            for (int i = 0; i < N; i++) {
+                for (int j = i + 1; j < N; j++) {
+                    if (A[i][0] > A[j][0]) {
+                        swap(A, i, j);
+                    }
+                }
             }
 
-            // Tìm vị trí của mỗi người trong hàng đợi
-            int[] order = new int[n+1]; // Thay đổi kích thước của mảng order
-            for (int j = 0; j < n; j++) {
-                int count = taller[j];
-                for (int k = 1; k <= n; k++) { // Bắt đầu từ 1 để tương thích với yêu cầu của đề bài
-                    if (count == 0 && order[k] == 0) {
-                        order[k] = heights[j];
-                        break;
-                    } else if (order[k] == 0 || order[k] >= heights[j]) {
-                        count--;
+            // Thực hiện điều chỉnh vị trí các người trong hàng đợi
+            for (int i = N - 1; i >= 0; i--) {
+                int lui = A[i][1];
+                for (int j = i; j < i + lui; j++) {
+                    swap(A, j, j + 1);
+                    if (A[j][0] == A[j + 1][0]) {
+                        lui++; // Nếu người cùng chiều cao phải lui thêm
                     }
                 }
             }
 
             // In ra kết quả
-            for (int j = 1; j <= n; j++) {
-                System.out.print(order[j] + " ");
+            for (int i = 0; i < N; i++) {
+                System.out.print(A[i][0] + " ");
             }
             System.out.println();
         }
 
         scanner.close();
+    }
+
+    public static void swap(int[][] A, int i, int j) {
+        // Swap chiều cao
+        int temp1 = A[i][0];
+        A[i][0] = A[j][0];
+        A[j][0] = temp1;
+        // Swap thứ hạng
+        int temp2 = A[i][1];
+        A[i][1] = A[j][1];
+        A[j][1] = temp2;
     }
 }
