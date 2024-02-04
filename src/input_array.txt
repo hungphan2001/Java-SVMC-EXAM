@@ -1,0 +1,13 @@
+2
+5
+1 2 3 4 5
+3
+insert 3 8
+update 5 9
+delete 2
+4
+8 1 7 0
+3
+insert 0 10
+delete 4
+update 3 100
